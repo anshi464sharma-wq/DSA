@@ -5,27 +5,32 @@
  *     struct ListNode *next;
  * };
  */
+struct ListNode*createNode(int val){
+    struct ListNode*newNode = malloc(sizeof(struct ListNode));
+    newNode->val = val;
+    newNode->next = NULL;
+    return newNode;
+}
+
 struct ListNode* partition(struct ListNode* head, int x) {
-    struct ListNode smallDummy;
-    struct ListNode largeDummy;
+    struct ListNode*small = createNode(0);
+    struct ListNode*large = createNode(0);
+    struct ListNode*smallP = small;
+    struct ListNode*largeP = large;
 
-    smallDummy.next = NULL;
-    largeDummy.next = NULL;
-
-    struct ListNode* smallP = &smallDummy;
-    struct ListNode* largeP = &largeDummy;
     while(head != NULL){
-        if(head->val < x){
-            smallP->next = head;
-            smallP = smallP->next;
-        }else{
-            largeP->next = head;
-            largeP = largeP->next;
-        }
+      if(x>head->val){
+        smallP->next = head;
+        smallP = smallP->next;
         head = head->next;
+      }else{
+        largeP->next=head;
+        largeP=largeP->next;
+        head = head->next;
+      }
     }
-    largeP->next = NULL;
-    smallP->next = largeDummy.next;
+       largeP->next = NULL;
+        smallP->next = large->next;
 
-    return smallDummy.next;
+    return small->next;
 }
